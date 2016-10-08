@@ -1,0 +1,24 @@
+{
+    "ID": "aws_ebs_demo",
+    "Properties": {
+        "Instance" : {
+            "Plugin": "aws-ebs",
+            "Properties": {
+                "DiscoverDefaults" : true,
+                "Tags" : {
+                    "env" : "dev",
+                    "instance-plugin" : "aws-ebs"
+                },
+                "CreateVolumeInput" : {
+                    "Size" : 100
+                }
+            }
+        },
+        "Flavor" : {
+            "Plugin": "flavor-vanilla",
+            "Properties": {
+                "Size" : 5
+            }
+        }
+    }
+}

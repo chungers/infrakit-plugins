@@ -1,0 +1,10 @@
+{
+    "DiscoverDefaults" : true,
+    "Tags" : {
+        "env" : "dev",
+        "instance-plugin" : "aws-ebs"
+    },
+    "CreateVolumeInput" : {
+        "Size" : 100
+    }
+}
