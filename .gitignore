@@ -1,5 +1,8 @@
 .DS_Store
 
+# Build binaries
+bin/*
+
 # Editor/IDE files
 *~
 .idea/
@@ -10,4 +13,4 @@ coverage.txt
 infrakit/*
 
 # Vendored sources.  These are synced during the build by govendor.
-vendor/*/
+instance/*/*/cmd/vendor/*/

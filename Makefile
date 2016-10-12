@@ -11,11 +11,11 @@ ifeq (${DISABLE_OPTIMIZATION},true)
 	VERSION:="$(VERSION)-noopt"
 endif
 
-.PHONY: clean all fmt vet lint build test vendor-sync containers
+.PHONY: clean all fmt vet lint build test plugins
 .DEFAULT: all
 all: clean fmt vet lint build test infrakit
 
-ci: fmt vet lint vendor-sync vendor-check coverage
+ci: fmt vet lint plugins
 
 AUTHORS: .mailmap .git/HEAD
 	 git log --format='%aN <%aE>' | sort -fu > $@
@@ -23,7 +23,14 @@ AUTHORS: .mailmap .git/HEAD
 # Package list
 PKGS_AND_MOCKS := $(shell go list ./... | grep -v /vendor)
 PKGS := $(shell echo $(PKGS_AND_MOCKS) | tr ' ' '\n' | grep -v /mock$)
-BINARIES := $(shell go list ./cmd/... ./example/... | grep -v /vendor)
+
+check-govendor:
+	$(if $(shell which govendor || echo ''), , \
+		$(error Please install govendor: go get github.com/kardianos/govendor))
+
+vendor-sync: check-govendor
+	@echo "+ $@"
+	@govendor sync
 
 vet:
 	@echo "+ $@"
@@ -50,16 +57,8 @@ build: vendor-sync
 
 clean:
 	@echo "+ $@"
-	-mkdir -p ./infrakit
-	-rm -rf ./infrakit/*
-
-infrakit: clean build
-	@echo "+ $@"
-	@for bin in $(BINARIES); do \
-	  go build -o ./infrakit/$$( echo $${bin} | awk -F '/' '{print $$NF}') \
-		 -ldflags "-X main.Version=$(VERSION) -X main.Revision=$(REVISION)" $${bin} || exit 1; \
-	done
-
+	-mkdir -p ./bin
+	-rm -rf ./bin/*
 
 install: vendor-sync
 	@echo "+ $@"
@@ -73,33 +72,21 @@ test: vendor-sync
 	@echo "+ $@"
 	@go test -test.short -race -v $(PKGS)
 
-coverage: vendor-sync
-	@echo "+ $@"
-	@for pkg in $(PKGS); do \
-	  go test -test.short -race -coverprofile="../../../$$pkg/coverage.txt" $${pkg} || exit 1; \
-	done
-
 test-full: vendor-sync
 	@echo "+ $@"
 	@go test -race $(PKGS)
 
-# govendor helpers
-check-govendor:
-	$(if $(shell which govendor || echo ''), , \
-		$(error Please install govendor: go get github.com/kardianos/govendor))
+plugins: aws-ec2 aws-ebs vmware-fusion
 
-vendor-sync: check-govendor
+aws-ec2:
 	@echo "+ $@"
-	@govendor sync
+	cd instance/aws/ec2/cmd && DEST=${CURDIR}/bin make -k bin
 
-vendor-save: check-govendor
+aws-ebs:
 	@echo "+ $@"
-	@govendor add +external
+	cd instance/aws/ebs/cmd && DEST=${CURDIR}/bin make -k bin
 
-vendor-check:
+vmware-fusion:
 	@echo "+ $@"
-	@test -z "$$(govendor status | tee /dev/stderr)"
+	cd instance/vmware/fusion/cmd && DEST=${CURDIR}/bin make -k bin
 
-containers:
-	@echo "+ $@"
-	cd swarm/swarmboot/container && make container

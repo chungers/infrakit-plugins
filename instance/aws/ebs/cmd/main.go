@@ -6,7 +6,8 @@ import (
 	"os"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/chungers/infrakit-plugins/cmd/instance/aws"
+	"github.com/chungers/infrakit-plugins/instance/aws"
+	"github.com/chungers/infrakit-plugins/instance/aws/ebs"
 	"github.com/docker/infrakit/plugin/util"
 	instance_plugin "github.com/docker/infrakit/spi/http/instance"
 	"github.com/spf13/cobra"
@@ -37,7 +38,7 @@ func reflect() {
 
 func main() {
 
-	builder := &Builder{}
+	builder := &ebs.Builder{}
 
 	logLevel := len(log.AllLevels) - 2
 	listen := "unix:///run/infrakit/plugins/aws-ebs.sock"
