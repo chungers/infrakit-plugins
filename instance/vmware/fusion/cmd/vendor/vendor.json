@@ -1,0 +1,25 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "euCuSxJ77a/yHpdmIAemhUv0/NU=",
+			"path": "github.com/chungers/infrakit-plugins/instance/vmware/fusion/cmd",
+			"revision": "4d0409f936b15c5753ffb46520eb21e06447f23c",
+			"revisionTime": "2016-10-08T05:48:02Z"
+		},
+		{
+			"checksumSHA1": "vQb5/flq1WIXVvYCCiqak2sA5p0=",
+			"path": "github.com/hooklift/govix",
+			"revision": "15c1838b00a23836f557053bbad280b5575ab8ee",
+			"revisionTime": "2015-09-22T15:00:47Z"
+		},
+		{
+			"checksumSHA1": "yk8uCHaQqbWFDJJ+NR5MSKhlZjY=",
+			"path": "github.com/hooklift/govmx",
+			"revision": "8c88ab0eacbf9d292478299de1bd447c62a7c7b7",
+			"revisionTime": "2015-11-21T05:18:59Z"
+		}
+	],
+	"rootPath": "github.com/chungers/infrakit-plugins/instance/vmware/fusion/cmd"
+}

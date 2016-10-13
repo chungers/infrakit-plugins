@@ -1,0 +1,16 @@
+{
+    "Properties" : {
+        "Tags" : {
+            "env" : "dev",
+            "instance-plugin" : "fusion"
+        },
+        "MemorySizeMBs" : 1000,
+        "NumCPUs" : 2,
+	"LaunchGUI" : true
+    },
+    "Tags" : {
+        "provisioner" : "infrakit-vmware-fusion-example",
+        "other" : "values"
+    },
+    "Init" : "#!/bin/sh; sudo apt-get -y update; sudo apt-get -y install nginx; sudo service nginx start"
+}
